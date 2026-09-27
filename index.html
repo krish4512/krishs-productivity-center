@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Krish's Productivity Center</title>
+  <meta name="description" content="A quiet desk for deep work — tasks, a pomodoro timer, and nothing extra." />
+  <meta name="theme-color" content="#F1EEE7" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <p class="kicker">Krish's</p>
+        <h1>Productivity Center</h1>
+      </div>
+      <p class="date" id="today"></p>
+    </header>
+    <div class="grid">
+      <section class="card" aria-label="Session">
+        <div class="row">
+          <div>
+            <p class="eyebrow">Session</p>
+            <h2 id="mode-label">Focus</h2>
+          </div>
+          <button class="icon-btn sm" id="mute-btn" type="button" aria-label="Mute chime">
+            <svg id="icon-vol" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          </button>
+        </div>
+        <div class="modes" role="tablist" aria-label="Timer mode">
+          <button type="button" role="tab" data-mode="focus" aria-selected="true">Focus</button>
+          <button type="button" role="tab" data-mode="short" aria-selected="false">Short</button>
+          <button type="button" role="tab" data-mode="long" aria-selected="false">Long</button>
+        </div>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 268 268" aria-hidden="true">
+            <circle cx="134" cy="134" r="120" fill="none" stroke="#e8e4db" stroke-width="2.5"/>
+            <circle id="ring" cx="134" cy="134" r="120" fill="none" stroke="#2c3531" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="753.98" stroke-dashoffset="0"/>
+          </svg>
+          <div class="ring-label">
+            <p class="clock" id="clock" aria-live="polite">25:00</p>
+            <p class="status" id="status">Ready</p>
+          </div>
+        </div>
+        <p class="focus-line" id="pinned">Pin a task to keep it in view.</p>
+        <p class="note" id="note" hidden></p>
+        <div class="controls">
+          <button class="icon-btn" type="button" id="reset-btn" aria-label="Reset timer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+          <button class="play" type="button" id="play-btn" aria-label="Start timer">
+            <svg id="icon-play" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          </button>
+          <button class="icon-btn" type="button" id="skip-btn" aria-label="Skip to next session">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" x2="19" y1="5" y2="19"/></svg>
+          </button>
+        </div>
+        <div class="dots" id="dots" aria-label="Sessions in this set">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="footer-row">
+          <p><strong id="today-count" style="color:var(--fg);font-variant-numeric:tabular-nums">0</strong> focus sessions today</p>
+          <button class="toggle" type="button" id="auto-btn" aria-pressed="true">
+            <span class="switch"><i></i></span>
+            Auto-advance
+          </button>
+        </div>
+      </section>
+      <section class="card" aria-label="Tasks">
+        <div class="row" style="align-items:flex-end">
+          <div>
+            <p class="eyebrow">Desk</p>
+            <h2>Tasks</h2>
+          </div>
+          <p id="open-count" style="margin:0 0 0.25rem;font-size:0.875rem;color:var(--muted-fg);font-variant-numeric:tabular-nums">0 open</p>
+        </div>
+        <form class="add" id="add-form">
+          <label class="sr" for="new-task">Add a task</label>
+          <input id="new-task" type="text" maxlength="160" autocomplete="off" placeholder="What deserves the next hour?" />
+          <button class="add-btn" type="submit" id="add-btn" aria-label="Add task" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </button>
+        </form>
+        <ul class="tasks" id="task-list"></ul>
+        <div class="footer-row" id="done-row" hidden>
+          <p id="done-count" style="margin:0;font-variant-numeric:tabular-nums">0 complete</p>
+          <button type="button" id="clear-btn" class="icon-btn sm" style="width:auto;padding:0 0.75rem;height:2.25rem">Clear done</button>
+        </div>
+      </section>
+    </div>
+    <p class="hint">Space starts and pauses · Enter adds a task · Saved on this device</p>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
